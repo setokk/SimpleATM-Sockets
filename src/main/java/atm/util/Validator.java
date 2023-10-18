@@ -8,7 +8,7 @@ public class Validator {
 
         // Check if client sent numbers
         return (values[0].matches("[0-2]") &&
-                values[1].matches("(-)?[0-9]+") &&
-                values[2].matches("(-)?([0-9]+\\.)?[0-9]+"));
+                values[1].matches("[0-9]+") &&
+                values[2].matches("([0-9]+\\.)?[0-9]+"));
     }
 }

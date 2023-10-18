@@ -1,5 +1,7 @@
 package atm.db;
 
+import atm.service.StatusCode;
+
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
@@ -36,15 +38,45 @@ public class DatabaseDriver {
                 config.getUsername(), config.getPassword());
 
         var statement = conn.createStatement();
-        var query = "";
+        var query = "SELECT balance FROM bankuser " +
+                    "WHERE id="+userID+";";
+        var rs = statement.executeQuery(query);
 
-        return 0;
+        /* Check if result set is empty */
+        if (!rs.next())
+            return StatusCode.USER_NOT_FOUND;
+
+        double balance = rs.getDouble("balance");
+        if (balance < amount)
+            return StatusCode.INSUFFICIENT_BALANCE;
+
+        statement.execute("UPDATE bankuser " +
+                             "SET balance=balance-"+amount+" " +
+                             "WHERE id="+userID+";");
+        statement.close();
+
+        return StatusCode.OK;
     }
 
     public int deposit(long userID, double amount) throws SQLException {
         var conn = DriverManager.getConnection(config.getURL(),
                 config.getUsername(), config.getPassword());
-        return 0;
+
+        var statement = conn.createStatement();
+        var query = "SELECT balance FROM bankuser " +
+                "WHERE id="+userID+";";
+        var rs = statement.executeQuery(query);
+
+        /* Check if result set is empty */
+        if (!rs.next())
+            return StatusCode.USER_NOT_FOUND;
+
+        statement.execute("UPDATE bankuser " +
+                             "SET balance=balance+" + amount + " " +
+                             "WHERE id="+userID+";");
+        statement.close();
+
+        return StatusCode.OK;
     }
 
     public double balance(long userID) throws SQLException {
@@ -55,8 +87,8 @@ public class DatabaseDriver {
         var query = "SELECT balance FROM bankuser " +
                     "WHERE id=" + userID + ";";
 
-        // 1 row returned
         var rs = statement.executeQuery(query);
+        statement.close();
         rs.next();
         return rs.getDouble("balance");
     }
