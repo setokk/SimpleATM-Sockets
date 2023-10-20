@@ -15,3 +15,11 @@ services:
       - "8888:8888"
     depends_on:
       - bankdb
+  client:
+    build:
+      context: ./client
+      dockerfile: ./Dockerfile
+    depends_on:
+      - bank
+    tty: true
+    stdin_open: true

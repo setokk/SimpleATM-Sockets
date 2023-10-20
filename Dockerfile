@@ -9,4 +9,7 @@ COPY src /app/src
 
 RUN mvn package
 
-CMD ["java", "-jar", "target/SimpleATM-1.0.jar"]
+# Wait for db to start
+COPY wait-for-it.sh ./wait-for-it.sh
+RUN chmod +x ./wait-for-it.sh
+ENTRYPOINT ["./wait-for-it.sh", "bankdb:5432", "--", "java", "-jar", "target/SimpleATM-1.0.jar"]

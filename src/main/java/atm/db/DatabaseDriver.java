@@ -88,8 +88,12 @@ public class DatabaseDriver {
                     "WHERE id=" + userID + ";";
 
         var rs = statement.executeQuery(query);
+        if (!rs.next())
+            return StatusCode.USER_NOT_FOUND;
+
+        double balance = rs.getDouble("balance");
         statement.close();
-        rs.next();
-        return rs.getDouble("balance");
+
+        return balance;
     }
 }
