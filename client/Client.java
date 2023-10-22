@@ -15,7 +15,7 @@ public class Client {
 
             var request = "";
             if (code == Protocol.BALANCE) {
-                request = code + ",1,1" + "\n";
+                request = code + ",1,1";
             }
             else {
                 // Get amount if code is not balance
@@ -25,7 +25,7 @@ public class Client {
                     Scanner in = new Scanner(System.in);
                     amount = in.nextDouble();
                 } while (amount < 0);
-                request = code + ",1," + amount + "\n";
+                request = code + ",1," + amount;
             }
             rm.send(request);
 
