@@ -1,4 +1,4 @@
-### Simple ATM System using Sockets, PostgreSQL and docker-compose
+### Simple ATM System using Sockets, Virtual Threads, PostgreSQL and docker-compose
 This project is part of the Distributed Systems course, University of Macedonia (UoM).
 
 ### Prequisites
